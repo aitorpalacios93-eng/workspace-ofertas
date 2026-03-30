@@ -762,6 +762,9 @@ class WorkspaceEngine:
             "proposal_ready": sum(
                 1 for item in prospects if item.get("proposal_ready")
             ),
+            "outreach_ready": sum(
+                1 for item in prospects if item.get("aacore_status") == "enriched"
+            ),
             "recommended": sum(1 for item in prospects if item.get("recommended")),
             "needs_reply": sum(
                 1
@@ -1028,62 +1031,6 @@ class WorkspaceEngine:
                     prospect_id=prospect_id,
                     telegram_relevant=True,
                 )
-
-                # NEW: AACORE enrichment (Haiku audit + Hunter email + Sonnet outreach)
-                domain = self._extract_domain(final_url or website)
-                sector = prospect.get("sector", "general")
-                ruta = prospect.get("route", "ES_B2B")
-                is_manual = bool(prospect.get("recommended"))
-
-                try:
-                    aacore_patch = self._run_aacore_enrichment(
-                        prospect_id=prospect_id,
-                        empresa=company_label,
-                        domain=domain,
-                        sector=sector,
-                        html=html,
-                        ruta=ruta,
-                        force_full=is_manual,
-                    )
-                    if aacore_patch.get("aacore_status") in ("enriched", "audited"):
-                        self.state.update_prospect(prospect_id, aacore_patch)
-
-                        # Feedback gate for Telegram notification
-                        has_email = bool(aacore_patch.get("contacto_email"))
-                        has_copy = bool(aacore_patch.get("email_frio"))
-                        auditoria_score = aacore_patch.get("auditoria_score") or 0
-
-                        should_notify = is_manual or (
-                            fit["score"] >= 70
-                            and has_email
-                            and has_copy
-                            and auditoria_score >= 6
-                        )
-
-                        if should_notify:
-                            notification = (
-                                f"{'✅ LEAD MANUAL' if is_manual else '🤖 LEAD AUTOMÁTICO'}\n"
-                                f"Empresa: {company_label}\n"
-                                f"Score web: {auditoria_score}/10 | Fit: {fit['score']}\n"
-                                f"Email: {aacore_patch.get('contacto_email', 'N/A')}\n"
-                                f"Asunto: {aacore_patch.get('asunto_email', '')[:60]}"
-                            )
-                            self._notify(notification)
-                    else:
-                        # AACORE enrichment failed, but don't block the proposal
-                        self.state.update_prospect(prospect_id, aacore_patch)
-                        # Still notify for manual leads
-                        if is_manual:
-                            self._notify(
-                                f"WORKSPACE_OFERTAS\nPropuesta lista: {company_label}\nRuta: {route}\nFit: {fit['score']}"
-                            )
-                except Exception as exc:
-                    print(f"[AACORE] Error in enrichment: {exc}")
-                    # Fallback: still notify for manual leads
-                    if is_manual:
-                        self._notify(
-                            f"WORKSPACE_OFERTAS\nPropuesta lista: {company_label}\nRuta: {route}\nFit: {fit['score']}"
-                        )
             else:
                 self.state.add_event(
                     event_type="diagnosis_ready",
@@ -1094,6 +1041,57 @@ class WorkspaceEngine:
                 if fit["score"] <= 39:
                     self._notify(
                         f"WORKSPACE_OFERTAS\nProspecto con fit bajo: {company_label}\nScore: {fit['score']}"
+                    )
+
+            # AACORE enrichment runs for ALL leads (Haiku audit always, Hunter+Sonnet gated)
+            domain = self._extract_domain(final_url or website)
+            sector = prospect.get("sector", "general")
+            ruta = prospect.get("route", "ES_B2B")
+
+            try:
+                aacore_patch = self._run_aacore_enrichment(
+                    prospect_id=prospect_id,
+                    empresa=company_label,
+                    domain=domain,
+                    sector=sector,
+                    html=html,
+                    ruta=ruta,
+                    force_full=manual_recommendation and approved_for_proposal,
+                )
+                if aacore_patch.get("aacore_status") in ("enriched", "audited"):
+                    self.state.update_prospect(prospect_id, aacore_patch)
+
+                    has_email = bool(aacore_patch.get("contacto_email"))
+                    has_copy = bool(aacore_patch.get("email_frio"))
+                    auditoria_score = aacore_patch.get("auditoria_score") or 0
+
+                    should_notify = manual_recommendation or (
+                        fit["score"] >= 70
+                        and has_email
+                        and has_copy
+                        and auditoria_score >= 6
+                    )
+
+                    if should_notify:
+                        notification = (
+                            f"{'✅ LEAD MANUAL' if manual_recommendation else '🤖 LEAD AUTOMÁTICO'}\n"
+                            f"Empresa: {company_label}\n"
+                            f"Score web: {auditoria_score}/10 | Fit: {fit['score']}\n"
+                            f"Email: {aacore_patch.get('contacto_email', 'N/A')}\n"
+                            f"Asunto: {aacore_patch.get('asunto_email', '')[:60]}"
+                        )
+                        self._notify(notification)
+                else:
+                    self.state.update_prospect(prospect_id, aacore_patch)
+                    if manual_recommendation:
+                        self._notify(
+                            f"WORKSPACE_OFERTAS\nPropuesta lista: {company_label}\nRuta: {route}\nFit: {fit['score']}"
+                        )
+            except Exception as exc:
+                print(f"[AACORE] Error in enrichment: {exc}")
+                if manual_recommendation:
+                    self._notify(
+                        f"WORKSPACE_OFERTAS\nPropuesta lista: {company_label}\nRuta: {route}\nFit: {fit['score']}"
                     )
 
             self.state.finish_job(

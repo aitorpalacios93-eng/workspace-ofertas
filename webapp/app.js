@@ -64,6 +64,7 @@ function renderSummary(summary) {
     ["Prospects", summary.total_prospects],
     ["En cola", summary.queued],
     ["Propuestas listas", summary.proposal_ready],
+    ["Outreach listos", summary.outreach_ready ?? 0],
     ["Recomendados", summary.recommended],
     ["Mensajes pendientes", summary.needs_reply],
     ["Telegram", summary.telegram_configured ? "OK" : "No config"],
@@ -173,6 +174,45 @@ function renderProspectDetail(detail) {
     .join("");
 
   container.innerHTML = `
+    ${["audited", "enriched"].includes(prospect.aacore_status) ? `
+    <section class="outreach-panel">
+      <h3>${prospect.aacore_status === "enriched" ? "Outreach listo" : "Análisis web"}</h3>
+      <div class="outreach-meta">
+        <div class="audit-score-block">
+          <span class="audit-label">Auditoría web</span>
+          <div class="audit-bar-wrap">
+            <div class="audit-bar" style="width: ${(prospect.auditoria_score || 0) * 10}%"></div>
+          </div>
+          <span class="audit-score-num">${escapeHtml(prospect.auditoria_score ?? "-")}/10</span>
+          ${prospect.prioridad ? badge(prospect.prioridad, prospect.prioridad === "alta" ? "good" : prospect.prioridad === "baja" ? "bad" : "warn") : ""}
+        </div>
+        ${prospect.contacto_email ? `
+        <div class="contact-block">
+          <span class="contact-email">${escapeHtml(prospect.contacto_email)}</span>
+          <button class="copy-btn" data-copy="${escapeHtml(prospect.contacto_email)}">Copiar email</button>
+        </div>` : ""}
+      </div>
+      ${prospect.auditoria_resumen ? `<p class="audit-resumen">${escapeHtml(prospect.auditoria_resumen)}</p>` : ""}
+      ${prospect.email_frio ? `
+      <div class="outreach-block">
+        <div class="outreach-block-header">
+          <span>Email frío</span>
+          <button class="copy-btn" data-copy="${escapeHtml((prospect.asunto_email ? "Asunto: " + prospect.asunto_email + "\n\n" : "") + prospect.email_frio)}">Copiar todo</button>
+        </div>
+        ${prospect.asunto_email ? `<div class="outreach-subject">Asunto: ${escapeHtml(prospect.asunto_email)}</div>` : ""}
+        <pre class="outreach-body">${escapeHtml(prospect.email_frio)}</pre>
+      </div>` : ""}
+      ${prospect.mensaje_linkedin ? `
+      <div class="outreach-block">
+        <div class="outreach-block-header">
+          <span>LinkedIn</span>
+          <button class="copy-btn" data-copy="${escapeHtml(prospect.mensaje_linkedin)}">Copiar</button>
+        </div>
+        <pre class="outreach-body">${escapeHtml(prospect.mensaje_linkedin)}</pre>
+      </div>` : ""}
+      ${prospect.aacore_status === "audited" && !prospect.email_frio ? `<p class="subtle">Score bajo o sin email — no se generó outreach. Márcalo como recomendado para forzar el pipeline completo.</p>` : ""}
+    </section>` : ""}
+
     <div class="detail-grid">
       <section>
         <h3>Ficha</h3>
@@ -243,44 +283,6 @@ function renderProspectDetail(detail) {
         <p id="messageStatus" class="subtle"></p>
       </section>
     </div>
-
-    ${prospect.aacore_status === "enriched" ? `
-    <section class="outreach-panel">
-      <h3>Outreach listo</h3>
-      <div class="outreach-meta">
-        <div class="audit-score-block">
-          <span class="audit-label">Auditoría web</span>
-          <div class="audit-bar-wrap">
-            <div class="audit-bar" style="width: ${(prospect.auditoria_score || 0) * 10}%"></div>
-          </div>
-          <span class="audit-score-num">${escapeHtml(prospect.auditoria_score ?? "-")}/10</span>
-          ${prospect.prioridad ? badge(prospect.prioridad, prospect.prioridad === "alta" ? "good" : prospect.prioridad === "baja" ? "bad" : "warn") : ""}
-        </div>
-        ${prospect.contacto_email ? `
-        <div class="contact-block">
-          <span class="contact-email">${escapeHtml(prospect.contacto_email)}</span>
-          <button class="copy-btn" data-copy="${escapeHtml(prospect.contacto_email)}">Copiar email</button>
-        </div>` : ""}
-      </div>
-      ${prospect.auditoria_resumen ? `<p class="audit-resumen">${escapeHtml(prospect.auditoria_resumen)}</p>` : ""}
-      ${prospect.email_frio ? `
-      <div class="outreach-block">
-        <div class="outreach-block-header">
-          <span>Email frío</span>
-          <button class="copy-btn" data-copy="${escapeHtml((prospect.asunto_email ? "Asunto: " + prospect.asunto_email + "\n\n" : "") + prospect.email_frio)}">Copiar todo</button>
-        </div>
-        ${prospect.asunto_email ? `<div class="outreach-subject">Asunto: ${escapeHtml(prospect.asunto_email)}</div>` : ""}
-        <pre class="outreach-body">${escapeHtml(prospect.email_frio)}</pre>
-      </div>` : ""}
-      ${prospect.mensaje_linkedin ? `
-      <div class="outreach-block">
-        <div class="outreach-block-header">
-          <span>LinkedIn</span>
-          <button class="copy-btn" data-copy="${escapeHtml(prospect.mensaje_linkedin)}">Copiar</button>
-        </div>
-        <pre class="outreach-body">${escapeHtml(prospect.mensaje_linkedin)}</pre>
-      </div>` : ""}
-    </section>` : ""}
 
     <section class="artifact-section">
       <h3>Artefactos</h3>
