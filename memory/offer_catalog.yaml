@@ -1,0 +1,202 @@
+version: 1
+brand_mode: single_brand
+updated_on: 2026-03-30
+
+routes:
+  ES_LOCAL:
+    market: Spain
+    status: active
+    currency: EUR
+    ideal_profiles:
+      - clinics
+      - med_spa
+      - aesthetic_centers
+      - restaurants_premium
+      - local_services
+      - education_centers
+    entry:
+      code: activation_local
+      name: Activacion Local
+      price_floor: 490
+      price_ceiling: 1200
+      promise: Poner en marcha una maquina minima para generar mas llamadas, reservas o formularios.
+      deliverables:
+        - offer_clarity
+        - landing_or_page_fix
+        - trust_signal_improvements
+        - basic_follow_up_path
+    core:
+      code: sistema_de_clientes
+      name: Sistema de Clientes
+      setup_floor: 1500
+      setup_ceiling: 4000
+      monthly_floor: 600
+      monthly_ceiling: 1500
+      promise: Convertir visibilidad actual en flujo comercial mas constante.
+      deliverables:
+        - message_and_offer
+        - landing_or_web_improvements
+        - content_plan
+        - basic_campaign_or_distribution
+        - follow_up_structure
+    scale:
+      code: growth_local
+      name: Growth Local
+      monthly_floor: 1500
+      monthly_ceiling: 3500
+      promise: Escalar lo que ya funciona.
+      deliverables:
+        - more_testing
+        - more_content_volume
+        - stronger_conversion_path
+        - monthly_iteration
+    backend:
+      code: sistema_interno_light
+      name: Sistema Interno Light
+      price_floor: 2000
+      price_ceiling: 6000
+      unlock_rule: Only after core sale or strong trust.
+    addons:
+      - code: creator_led_content
+        name: Creator-led Content
+        price_floor: 600
+        price_ceiling: 2000
+      - code: review_engine
+        name: Review Engine
+        price_floor: 300
+        price_ceiling: 900
+
+  ES_B2B:
+    market: Spain
+    status: active
+    currency: EUR
+    ideal_profiles:
+      - industrial_services
+      - engineering
+      - logistics
+      - distributors
+      - technical_consulting
+      - b2b_manufacturing
+    entry:
+      code: diagnostico_comercial_digital
+      name: Diagnostico Comercial Digital
+      price_floor: 1200
+      price_ceiling: 2500
+      promise: Detectar la brecha comercial digital y priorizar quick wins.
+      deliverables:
+        - executive_diagnosis
+        - evidence_pack
+        - opportunity_map
+        - sales_meeting_questions
+    core:
+      code: sistema_comercial_digital
+      name: Sistema Comercial Digital
+      setup_floor: 3500
+      setup_ceiling: 9000
+      monthly_floor: 900
+      monthly_ceiling: 2500
+      promise: Pasar de presencia pasiva a sistema que da credibilidad y abre conversaciones.
+      deliverables:
+        - positioning_refresh
+        - web_or_landing_upgrade
+        - authority_content
+        - message_clarity
+        - follow_up_structure
+    scale:
+      code: growth_and_revenue_enablement
+      name: Growth and Revenue Enablement
+      monthly_floor: 2500
+      monthly_ceiling: 6000
+      promise: Escalar autoridad y mejorar conversion comercial.
+      deliverables:
+        - more_content_assets
+        - commercial_enablement
+        - stronger_nurture
+        - revenue_iteration
+    backend:
+      code: revenue_ops_light
+      name: Revenue Ops Light
+      price_floor: 3000
+      price_ceiling: 12000
+      unlock_rule: Only after commercial layer is trusted.
+    addons:
+      - code: authority_video
+        name: Authority Video Asset
+        price_floor: 1200
+        price_ceiling: 3500
+      - code: follow_up_engine
+        name: Follow-up Engine
+        price_floor: 800
+        price_ceiling: 2500
+
+  US_HISPANIC:
+    market: United States
+    status: playbook_only_until_es_case
+    currency: USD
+    ideal_profiles:
+      - roofing
+      - hvac
+      - plumbing
+      - remodeling
+      - med_spa
+      - dental
+      - cleaning
+      - moving
+      - home_services
+    excluded_profiles_v1:
+      - legal
+      - real_estate_brokerage
+      - mortgage
+      - tax
+      - compliance_heavy_finance
+    entry:
+      code: fast_trust_activation
+      name: Fast Trust Activation
+      price_floor: 1000
+      price_ceiling: 2500
+      promise: Elevate trust and conversion fast without jumping into a large retainer.
+      deliverables:
+        - trust_gap_fix
+        - page_or_profile_upgrade
+        - review_signal_upgrade
+        - response_path
+    core:
+      code: client_acquisition_system
+      name: Client Acquisition System
+      setup_floor: 3000
+      setup_ceiling: 8000
+      monthly_floor: 1500
+      monthly_ceiling: 4000
+      promise: Turn trust, visibility and follow-up into booked calls and signed clients.
+      deliverables:
+        - message_and_offer
+        - trust_assets
+        - landing_or_site_upgrade
+        - distribution_or_campaign_layer
+        - lead_follow_up
+    scale:
+      code: growth_plus_close
+      name: Growth plus Close
+      monthly_floor: 3000
+      monthly_ceiling: 8000
+      promise: Scale what is already converting and improve the close.
+      deliverables:
+        - testing
+        - more_content
+        - stronger_follow_up
+        - close_support
+    backend:
+      code: revenue_ops_light
+      name: Revenue Ops Light
+      price_floor: 4000
+      price_ceiling: 12000
+      unlock_rule: Only after trust and first traction.
+    addons:
+      - code: creator_led_content
+        name: Creator-led Content
+        price_floor: 1000
+        price_ceiling: 3000
+      - code: review_engine
+        name: Review and Response Engine
+        price_floor: 500
+        price_ceiling: 1500

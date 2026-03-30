@@ -1,0 +1,62 @@
+[
+  {
+    "id": "48dbc666-5517-49af-8e7c-b2256c123c9d",
+    "type": "prospect_process",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "message_id": null,
+    "status": "success",
+    "summary": "Procesado AACORE Test -> ES_B2B (59)",
+    "error": null,
+    "created_at": "2026-03-30T14:13:01+00:00",
+    "updated_at": "2026-03-30T14:13:01+00:00",
+    "ended_at": "2026-03-30T14:13:01+00:00"
+  },
+  {
+    "id": "d2e11d11-b12b-42f7-a894-32fba5eafc21",
+    "type": "prospect_process",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "message_id": null,
+    "status": "success",
+    "summary": "Procesado Destino Cuba -> ES_LOCAL (37)",
+    "error": null,
+    "created_at": "2026-03-30T14:11:45+00:00",
+    "updated_at": "2026-03-30T14:11:45+00:00",
+    "ended_at": "2026-03-30T14:11:45+00:00"
+  },
+  {
+    "id": "87b35156-c5c3-46c1-b8a0-9d3c595c5a12",
+    "type": "prospect_process",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "message_id": null,
+    "status": "success",
+    "summary": "Procesado Destino Cuba -> ES_B2B (34)",
+    "error": null,
+    "created_at": "2026-03-30T13:56:32+00:00",
+    "updated_at": "2026-03-30T13:56:32+00:00",
+    "ended_at": "2026-03-30T13:56:32+00:00"
+  },
+  {
+    "id": "b032dcaa-53fc-4817-a971-545d129dbad0",
+    "type": "message_reply",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "message_id": "c1a5d9c3-8a63-4c9f-9449-cc2f69ea0981",
+    "status": "success",
+    "summary": "Reply draft ready",
+    "error": null,
+    "created_at": "2026-03-30T13:52:00+00:00",
+    "updated_at": "2026-03-30T13:52:00+00:00",
+    "ended_at": "2026-03-30T13:52:00+00:00"
+  },
+  {
+    "id": "c999452e-fcb3-46d9-8593-e242074213fb",
+    "type": "prospect_process",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "message_id": null,
+    "status": "success",
+    "summary": "Procesado AACORE Test -> ES_B2B (59)",
+    "error": null,
+    "created_at": "2026-03-30T13:51:37+00:00",
+    "updated_at": "2026-03-30T13:51:37+00:00",
+    "ended_at": "2026-03-30T13:51:37+00:00"
+  }
+]

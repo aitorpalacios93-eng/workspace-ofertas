@@ -1,0 +1,42 @@
+version: 1
+updated_on: 2026-03-30
+time_horizon_days: 60
+
+mode: validation_first
+
+priority_weights:
+  ES_B2B: 50
+  ES_LOCAL: 40
+  US_HISPANIC: 10
+
+route_status:
+  ES_B2B: active
+  ES_LOCAL: active
+  US_HISPANIC: playbook_ready_but_limited
+
+gates:
+  expand_us_hispanic:
+    status: locked
+    unlock_if:
+      - one_documented_es_case
+      - one_refined_core_offer
+      - one_reusable_proposal_flow
+  heavier_automation:
+    status: allowed_after_real_patterns
+    unlock_if:
+      - repeated_manual_process
+      - enough_real_objections
+      - enough_real_outcomes
+
+weekly_focus:
+  week_1_2:
+    - prioritize_live_b2b_opportunities
+    - seek_one_fast_es_local_close
+    - prepare_us_hispanic_playbook_only
+  week_3_4:
+    - document_case
+    - refine_offer
+    - update_fit_rules
+  month_2:
+    - automate_repeated_steps
+    - activate_us_when_gate_opens

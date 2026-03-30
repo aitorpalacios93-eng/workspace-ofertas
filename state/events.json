@@ -1,0 +1,150 @@
+[
+  {
+    "id": "dcb3456c-fc7d-4a45-97fc-8d3edce3e1e7",
+    "type": "diagnosis_ready",
+    "message": "Diagnostico listo para AACORE Test. Fit 59 (quickwins_only).",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T14:13:01+00:00"
+  },
+  {
+    "id": "bc5466fe-5f54-4de4-98f3-25a750f725f2",
+    "type": "prospect_processing",
+    "message": "Analizando AACORE Test",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T14:13:01+00:00"
+  },
+  {
+    "id": "941c7665-7a59-4c68-9bdb-e8b070d119cd",
+    "type": "manual_controls_updated",
+    "message": "Decision manual actualizada para AACORE Test.",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {
+      "recommended": false,
+      "route_override": "ES_B2B",
+      "requeue": true
+    },
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T14:13:01+00:00"
+  },
+  {
+    "id": "7a49aac5-2bca-4a36-8be0-5afb9b9b580f",
+    "type": "proposal_ready",
+    "message": "Propuesta lista para Destino Cuba en ruta ES_LOCAL. Se activo por recomendacion manual.",
+    "level": "info",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "data": {},
+    "telegram_relevant": true,
+    "created_at": "2026-03-30T14:11:45+00:00"
+  },
+  {
+    "id": "ba83f320-111b-4603-a27f-8f3eebac99bd",
+    "type": "prospect_processing",
+    "message": "Analizando Destino Cuba",
+    "level": "info",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T14:11:45+00:00"
+  },
+  {
+    "id": "2406effb-a30e-48f6-a68d-b4815de000f5",
+    "type": "manual_controls_updated",
+    "message": "Decision manual actualizada para Destino Cuba.",
+    "level": "info",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "data": {
+      "recommended": true,
+      "route_override": "ES_LOCAL",
+      "requeue": true
+    },
+    "telegram_relevant": true,
+    "created_at": "2026-03-30T14:11:45+00:00"
+  },
+  {
+    "id": "0a388568-b85a-49cf-bd67-5df1c0b562ab",
+    "type": "diagnosis_ready",
+    "message": "Diagnostico listo para Destino Cuba. Fit 34 (no_proposal).",
+    "level": "info",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "data": {},
+    "telegram_relevant": true,
+    "created_at": "2026-03-30T13:56:32+00:00"
+  },
+  {
+    "id": "d14bf3f6-6e6c-45ea-99ab-04ebac84cf7c",
+    "type": "prospect_processing",
+    "message": "Analizando Destino Cuba",
+    "level": "info",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T13:56:32+00:00"
+  },
+  {
+    "id": "586a0a8f-b586-4108-8466-100d66815d76",
+    "type": "prospect_created",
+    "message": "Nuevo prospecto en cola: Destino Cuba",
+    "level": "info",
+    "prospect_id": "d71544c8-9bc4-4660-a172-fbc39910c831",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T13:56:30+00:00"
+  },
+  {
+    "id": "3224f940-c20c-44ec-99cb-7f7872871a4a",
+    "type": "reply_draft_ready",
+    "message": "Borrador de respuesta listo para revisar.",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": true,
+    "created_at": "2026-03-30T13:52:00+00:00"
+  },
+  {
+    "id": "1df784a6-4335-4df2-9fbf-754bb125492d",
+    "type": "message_received",
+    "message": "Mensaje entrante registrado para respuesta automatica.",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": true,
+    "created_at": "2026-03-30T13:52:00+00:00"
+  },
+  {
+    "id": "9a1414eb-e102-4927-88e2-b8847e43bda5",
+    "type": "diagnosis_ready",
+    "message": "Diagnostico listo para AACORE Test. Fit 59 (quickwins_only).",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T13:51:37+00:00"
+  },
+  {
+    "id": "6be06adb-c6f6-4c81-9307-a8d9b479f525",
+    "type": "prospect_processing",
+    "message": "Analizando AACORE Test",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T13:51:37+00:00"
+  },
+  {
+    "id": "61cffbcc-f8ac-4328-8257-998c537265fc",
+    "type": "prospect_created",
+    "message": "Nuevo prospecto en cola: AACORE Test",
+    "level": "info",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "data": {},
+    "telegram_relevant": false,
+    "created_at": "2026-03-30T13:51:37+00:00"
+  }
+]

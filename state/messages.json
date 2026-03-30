@@ -1,0 +1,13 @@
+[
+  {
+    "id": "c1a5d9c3-8a63-4c9f-9449-cc2f69ea0981",
+    "prospect_id": "5d770918-73a0-4ccd-8862-876ec2495ecf",
+    "channel": "telegram",
+    "direction": "inbound",
+    "content": "Nos interesa, pero queremos entender el retorno antes de avanzar.",
+    "status": "draft_ready",
+    "reply_draft": "Gracias por el mensaje. Revisando lo que hay hoy, la prioridad no es hacer mas ruido sino mejorar como se presenta y convierte la propuesta comercial. Si te encaja, te comparto el siguiente paso recomendado de forma muy concreta.",
+    "created_at": "2026-03-30T13:52:00+00:00",
+    "updated_at": "2026-03-30T13:52:00+00:00"
+  }
+]

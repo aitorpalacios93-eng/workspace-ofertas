@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WORKSPACE_OFERTAS</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">WORKSPACE_OFERTAS</p>
+        <h1>Dashboard operativo</h1>
+        <p class="subtle">WebApp de visualizacion + worker automatico con cola, diagnostico, propuesta y avisos relevantes.</p>
+      </div>
+      <div class="topbar-actions">
+        <button id="refreshButton" class="secondary">Actualizar</button>
+        <button id="runWorkerButton">Forzar worker</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel-form">
+        <h2>Nuevo prospecto</h2>
+        <form id="prospectForm">
+          <label>
+            Empresa
+            <input type="text" name="company_name" placeholder="AACORE / Nombre del negocio" />
+          </label>
+          <label>
+            Website
+            <input type="text" name="website" placeholder="https://empresa.com" />
+          </label>
+          <div class="grid-two">
+            <label>
+              Pais
+              <select name="country">
+                <option value="">Auto</option>
+                <option value="ES">Espana</option>
+                <option value="US">USA</option>
+              </select>
+            </label>
+            <label>
+              Sector
+              <input type="text" name="sector" placeholder="industrial / med spa / roofing" />
+            </label>
+          </div>
+          <div class="grid-two">
+            <label>
+              Forzar ruta
+              <select name="route_override">
+                <option value="">Auto</option>
+                <option value="ES_LOCAL">ES_LOCAL</option>
+                <option value="ES_B2B">ES_B2B</option>
+                <option value="US_HISPANIC">US_HISPANIC</option>
+              </select>
+            </label>
+            <label class="checkbox-row checkbox-row-spaced">
+              <span>Recomendacion</span>
+              <input type="checkbox" name="recommended" />
+              <small>Bypass comercial del filtro si es un conocido, referido o prioridad tuya.</small>
+            </label>
+          </div>
+          <div class="grid-two">
+            <label>
+              Instagram
+              <input type="text" name="instagram" placeholder="https://instagram.com/..." />
+            </label>
+            <label>
+              LinkedIn
+              <input type="text" name="linkedin" placeholder="https://linkedin.com/..." />
+            </label>
+          </div>
+          <div class="grid-two">
+            <label>
+              Facebook
+              <input type="text" name="facebook" placeholder="https://facebook.com/..." />
+            </label>
+            <label>
+              YouTube / TikTok
+              <input type="text" name="youtube" placeholder="https://youtube.com/..." />
+            </label>
+          </div>
+          <label>
+            Notas
+            <textarea name="notes" rows="3" placeholder="Contexto, referencia o motivo de interes"></textarea>
+          </label>
+          <label>
+            Nota de recomendacion
+            <textarea name="recommendation_note" rows="2" placeholder="Ej: conocido del usuario, referido fiable, oportunidad estrategica"></textarea>
+          </label>
+          <button type="submit">Enviar a cola</button>
+        </form>
+        <p id="formStatus" class="subtle"></p>
+      </section>
+
+      <section class="panel panel-summary">
+        <h2>Resumen</h2>
+        <div id="summaryCards" class="cards"></div>
+      </section>
+
+      <section class="panel panel-prospects">
+        <div class="panel-head">
+          <h2>Prospects</h2>
+          <span id="prospectCount" class="subtle"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Estado</th>
+                <th>Ruta</th>
+                <th>Fit</th>
+                <th>Pais</th>
+                <th>Actualizado</th>
+              </tr>
+            </thead>
+            <tbody id="prospectsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel panel-detail">
+        <div class="panel-head">
+          <h2>Detalle</h2>
+          <span id="detailHint" class="subtle">Selecciona un prospecto</span>
+        </div>
+        <div id="detailContent" class="detail-empty">No hay prospecto seleccionado.</div>
+      </section>
+
+      <section class="panel panel-events">
+        <h2>Timeline</h2>
+        <div id="eventsList" class="stack-list"></div>
+      </section>
+
+      <section class="panel panel-jobs">
+        <h2>Worker</h2>
+        <div id="jobsList" class="stack-list"></div>
+      </section>
+
+      <section class="panel panel-messages">
+        <h2>Mensajes</h2>
+        <div id="messagesList" class="stack-list"></div>
+      </section>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

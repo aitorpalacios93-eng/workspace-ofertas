@@ -1,0 +1,4 @@
+{
+  "auto_worker": true,
+  "poll_interval_seconds": 5
+}

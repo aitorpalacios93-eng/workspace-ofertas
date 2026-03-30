@@ -1,0 +1,78 @@
+version: 1
+updated_on: 2026-03-30
+
+focus_weights:
+  ES_B2B: 0.50
+  ES_LOCAL: 0.40
+  US_HISPANIC: 0.10
+
+fit_score:
+  weights:
+    trust_gap: 20
+    demand_signal: 20
+    speed_to_value: 20
+    commercial_urgency: 15
+    delivery_fit: 15
+    evidence_density: 10
+  thresholds:
+    no_proposal_max: 39
+    quickwins_only_max: 64
+    full_proposal_min: 65
+    high_priority_min: 80
+
+routing:
+  ES_LOCAL:
+    country_in:
+      - ES
+    positive_signals:
+      - local_intent
+      - google_business
+      - whatsapp
+      - reservations
+      - booking
+      - local_reviews
+      - call_now
+    negative_signals:
+      - long_b2b_sales_cycle
+      - multi_stakeholder_complex_sale
+  ES_B2B:
+    country_in:
+      - ES
+    positive_signals:
+      - industry
+      - distribution
+      - technical_service
+      - engineering
+      - b2b_consulting
+      - multi_page_web
+      - authority_gap
+    negative_signals:
+      - purely_local_capture
+      - ultra_low_ticket
+  US_HISPANIC:
+    country_in:
+      - US
+    positive_signals:
+      - bilingual_site
+      - spanish_content
+      - hispanic_owner_signal
+      - service_business
+      - high_review_dependency
+      - booked_call_sales_motion
+    excluded_v1:
+      - legal
+      - real_estate_brokerage
+      - mortgage
+      - tax
+      - compliance_heavy_finance
+
+language_rules:
+  ES_LOCAL: es
+  ES_B2B: es
+  US_HISPANIC: detect
+
+override_rules:
+  allowed_when:
+    - prior_relationship
+    - live_proposal
+    - strategic_reason_documented
