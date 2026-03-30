@@ -1043,8 +1043,9 @@ class WorkspaceEngine:
                         sector=sector,
                         html=html,
                         ruta=ruta,
+                        force_full=is_manual,
                     )
-                    if aacore_patch.get("aacore_status") == "enriched":
+                    if aacore_patch.get("aacore_status") in ("enriched", "audited"):
                         self.state.update_prospect(prospect_id, aacore_patch)
 
                         # Feedback gate for Telegram notification
@@ -1233,35 +1234,62 @@ class WorkspaceEngine:
         html: str,
         contacto_nombre: str = "",
         ruta: str = "ES_B2B",
+        force_full: bool = False,
     ) -> dict[str, Any]:
-        """Call Haiku audit + Hunter enrichment + Sonnet outreach. Returns patch dict."""
+        """Call Haiku audit + Hunter enrichment + Sonnet outreach with phase gates.
+
+        Phase gates (skipped when force_full=True, i.e. manual leads):
+        - If Haiku score < 5 → STOP (no Hunter, no Sonnet)
+        - If no email found → STOP (no Sonnet)
+        This saves ~90% of Sonnet tokens on low-quality automatic leads.
+        """
         try:
             from aacore_integration import AACorePipeline
             pipeline = AACorePipeline()
 
-            # Phase 1: Haiku audit
+            # Phase 1: Haiku audit (~$0.001 — always runs)
             audit = pipeline.audit_with_haiku(empresa, domain, sector, html)
+            score = audit.get("auditoria_score", 0)
+            print(f"[AACORE] {domain} → Haiku score: {score}/10")
 
-            # Phase 2: Hunter.io enrichment
+            result = {
+                "auditoria_score": score,
+                "auditoria_resumen": audit.get("auditoria_resumen"),
+                "prioridad": audit.get("prioridad"),
+                "contacto_email": None,
+                "asunto_email": None,
+                "email_frio": None,
+                "mensaje_linkedin": None,
+                "aacore_status": "audited",
+            }
+
+            # GATE 1: Skip Hunter + Sonnet if score too low (unless manual)
+            if score < 5 and not force_full:
+                print(f"[AACORE] {domain} → Score {score} < 5, skipping Hunter + Sonnet")
+                return result
+
+            # Phase 2: Hunter.io enrichment (free tier)
             enrich = pipeline.enrich_contact(empresa, domain)
+            result["contacto_email"] = enrich.get("contacto_email")
 
-            # Phase 3: Sonnet outreach
+            # GATE 2: Skip Sonnet if no email found (unless manual)
+            if not result["contacto_email"] and not force_full:
+                print(f"[AACORE] {domain} → No email found, skipping Sonnet")
+                return result
+
+            # Phase 3: Sonnet outreach (~$0.01-0.03 — only for qualified leads)
             outreach = pipeline.write_outreach_sonnet(
                 empresa, domain, sector,
                 audit.get("auditoria_resumen", ""),
                 contacto_nombre, ruta,
             )
+            result["asunto_email"] = outreach.get("asunto_email")
+            result["email_frio"] = outreach.get("email_frio")
+            result["mensaje_linkedin"] = outreach.get("mensaje_linkedin")
+            result["aacore_status"] = "enriched"
+            print(f"[AACORE] {domain} → Full enrichment complete")
 
-            return {
-                "auditoria_score": audit.get("auditoria_score"),
-                "auditoria_resumen": audit.get("auditoria_resumen"),
-                "prioridad": audit.get("prioridad"),
-                "contacto_email": enrich.get("contacto_email"),
-                "asunto_email": outreach.get("asunto_email"),
-                "email_frio": outreach.get("email_frio"),
-                "mensaje_linkedin": outreach.get("mensaje_linkedin"),
-                "aacore_status": "enriched",
-            }
+            return result
         except Exception as exc:
             print(f"[AACORE] Error enriching {domain}: {exc}")
             return {"aacore_status": "error"}
