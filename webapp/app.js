@@ -53,6 +53,12 @@ function statusTone(status) {
   return "neutral";
 }
 
+function aacoreTone(status) {
+  if (status === "enriched") return "good";
+  if (status === "error") return "bad";
+  return "neutral";
+}
+
 function renderSummary(summary) {
   const cards = [
     ["Prospects", summary.total_prospects],
@@ -88,6 +94,7 @@ function renderProspects(prospects) {
           <td>${badge(prospect.status || "-", statusTone(prospect.status))}</td>
           <td>${badge(prospect.route || "-", "neutral")}</td>
           <td>${badge(prospect.fit_score ?? "-", scoreTone(prospect.fit_score))}</td>
+          <td>${badge(prospect.aacore_status || "-", aacoreTone(prospect.aacore_status))}</td>
           <td>${escapeHtml(prospect.country || "-")}</td>
           <td>${escapeHtml(prospect.updated_at || "-")}</td>
         </tr>
@@ -237,6 +244,44 @@ function renderProspectDetail(detail) {
       </section>
     </div>
 
+    ${prospect.aacore_status === "enriched" ? `
+    <section class="outreach-panel">
+      <h3>Outreach listo</h3>
+      <div class="outreach-meta">
+        <div class="audit-score-block">
+          <span class="audit-label">Auditoría web</span>
+          <div class="audit-bar-wrap">
+            <div class="audit-bar" style="width: ${(prospect.auditoria_score || 0) * 10}%"></div>
+          </div>
+          <span class="audit-score-num">${escapeHtml(prospect.auditoria_score ?? "-")}/10</span>
+          ${prospect.prioridad ? badge(prospect.prioridad, prospect.prioridad === "alta" ? "good" : prospect.prioridad === "baja" ? "bad" : "warn") : ""}
+        </div>
+        ${prospect.contacto_email ? `
+        <div class="contact-block">
+          <span class="contact-email">${escapeHtml(prospect.contacto_email)}</span>
+          <button class="copy-btn" data-copy="${escapeHtml(prospect.contacto_email)}">Copiar email</button>
+        </div>` : ""}
+      </div>
+      ${prospect.auditoria_resumen ? `<p class="audit-resumen">${escapeHtml(prospect.auditoria_resumen)}</p>` : ""}
+      ${prospect.email_frio ? `
+      <div class="outreach-block">
+        <div class="outreach-block-header">
+          <span>Email frío</span>
+          <button class="copy-btn" data-copy="${escapeHtml((prospect.asunto_email ? "Asunto: " + prospect.asunto_email + "\n\n" : "") + prospect.email_frio)}">Copiar todo</button>
+        </div>
+        ${prospect.asunto_email ? `<div class="outreach-subject">Asunto: ${escapeHtml(prospect.asunto_email)}</div>` : ""}
+        <pre class="outreach-body">${escapeHtml(prospect.email_frio)}</pre>
+      </div>` : ""}
+      ${prospect.mensaje_linkedin ? `
+      <div class="outreach-block">
+        <div class="outreach-block-header">
+          <span>LinkedIn</span>
+          <button class="copy-btn" data-copy="${escapeHtml(prospect.mensaje_linkedin)}">Copiar</button>
+        </div>
+        <pre class="outreach-body">${escapeHtml(prospect.mensaje_linkedin)}</pre>
+      </div>` : ""}
+    </section>` : ""}
+
     <section class="artifact-section">
       <h3>Artefactos</h3>
       ${artifacts.length ? artifacts.map((artifact) => `
@@ -267,6 +312,16 @@ function renderProspectDetail(detail) {
   overrideForm.addEventListener("submit", submitOverrideForm);
   const messageForm = document.getElementById("messageForm");
   messageForm.addEventListener("submit", submitMessageForm);
+
+  container.querySelectorAll(".copy-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigator.clipboard.writeText(btn.dataset.copy || "").then(() => {
+        const original = btn.textContent;
+        btn.textContent = "✓ Copiado";
+        setTimeout(() => { btn.textContent = original; }, 1500);
+      });
+    });
+  });
 }
 
 async function loadDashboard({ preserveSelection = true } = {}) {
